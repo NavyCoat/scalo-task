@@ -2,6 +2,8 @@
 
 I created the simplest solution focusing on User experience of Library, which will be a developer using this library.
 
+![Sportradar.jpg](Sportradar.jpg)
+
 All focus around ScoreBoard which in current implementation:
 - is an Agregate of Games
 - and due to time limit it is a Facade for the library (it violates SRP because of Allowing to get uUmmary directly from Aggreaget, which IMO should be done elsewhere to separate Queries from Commands)
