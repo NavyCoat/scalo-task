@@ -1,8 +1,11 @@
 <?php
 
-class ScoreBoard
+final class ScoreBoard
 {
-    private $games = [];
+    /**
+     * @var Game[]
+     */
+    private array $games = [];
 
     public function __construct()
     {
@@ -15,5 +18,26 @@ class ScoreBoard
         $this->games[$gameId] = $game;
 
         return $gameId;
+    }
+
+    public function updateScore(string $gameId, int $homeTeamScore, int $awayTeamScore): void
+    {
+        $this->games[$gameId]->updateScore($homeTeamScore, $awayTeamScore);
+    }
+
+    public function finishGame(string $gameId): void
+    {
+        unset($this->games[$gameId]);
+    }
+
+    public function summaryOfGamesByTotalScore(): SummaryOfGamesByTotalScore
+    {
+        $summary = [];
+        foreach ($this->games as $game) {
+            $gameView = $game->getGameView();
+            $summary[] = $gameView;
+        }
+
+        return new SummaryOfGamesByTotalScore($summary);
     }
 }

@@ -1,27 +1,27 @@
 <?php
+require __DIR__ . '/GameView.php';
+require __DIR__ . '/HomeTeam.php';
+require __DIR__ . '/AwayTeam.php';
+require __DIR__ . '/Game.php';
+require __DIR__ . '/SummaryOfGamesByTotalScore.php';
+require __DIR__ . '/ScoreBoard.php';
+
 
 $scoreBoard = new ScoreBoard();
 
-$homeTeam = new HomeTeam();
-$awayTeam = new AwayTeam();
+$homeTeam = new HomeTeam('home team name');
+$awayTeam = new AwayTeam('away team name');
 
 //The boards support the following operations:
-
 $gameId = $scoreBoard->startGame($homeTeam, $awayTeam); //Start a game. When a game starts, it should capture (being initial score 0-0)
 
+$scoreBoard->updateScore($gameId, 1, 2); //Update score. Receiving the pair score; home team score and away team score updates a game score
 
-$homeTeamScore = 0;
-$awayTeamScore = 0;
-$scoreBoard->updateScore($gameId, $homeTeamScore, $awayTeamScore); //Update score. Receiving the pair score; home team score and away team score updates a game score
-
-$scoreBoard->finishGame($gameId); //Finish a game. It will remove a match from the scoreboard
 
 $summary = $scoreBoard->summaryOfGamesByTotalScore(); //Get a summary of games by total score. Those games with the same total score will be returned ordered by the most recently added to our system.
 
+foreach ($summary as $item) {
+    echo $item->homeTeamName . ' ' . $item->homeTeamScore . ' - ' . $item->awayTeamScore . ' ' . $item->awayTeamName . PHP_EOL;
+}
 
-//scoreBoard will offer a facade in order to make easy for end user (which is a developer) to use library.
-
-//game will be able to start and end by itself
-
-//Does Game should be able to report his state?
-//Game view can be different model it's allow to postpone decision.
+$scoreBoard->finishGame($gameId); //Finish a game. When a game is finished, it should be removed from the system.
